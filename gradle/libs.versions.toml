@@ -1,0 +1,78 @@
+[versions]
+agp = "8.7.3"
+kotlin = "2.0.20"
+coreKtx = "1.15.0"
+junit = "4.13.2"
+junitVersion = "1.2.1"
+espressoCore = "3.6.1"
+lifecycleRuntimeKtx = "2.8.7"
+activityCompose = "1.10.1"
+composeBom = "2025.03.01"
+appcompat = "1.7.0"
+material = "1.12.0"
+koinAndroid = "4.0.0"
+koinKsp = "1.4.0"
+ksp = "2.0.20-1.0.25"
+room = "2.6.1"
+timber = "5.0.1"
+composeNavigation = "2.8.9"
+koinCompose = "4.0.0"
+constraintCompose = "1.1.1"
+kotlinxSerializationJson = "1.7.3"
+jetbrainsKotlinJvm = "2.0.20"
+
+
+[libraries]
+#core
+androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+koinAndroid = { group = "io.insert-koin", name = "koin-android", version.ref = "koinAndroid" }
+koinAnnotations = { group = "io.insert-koin", name = "koin-annotations", version.ref = "koinKsp" }
+koinKsp = { group = "io.insert-koin", name = "koin-ksp-compiler", version.ref = "koinKsp" }
+timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "timber" }
+#presentation
+androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
+androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
+androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
+androidx-compose-navigation = { group = "androidx.navigation", name = "navigation-compose", version.ref = "composeNavigation" }
+kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
+androidx-constraint-layout-compose = { group = "androidx.constraintlayout", name = "constraintlayout-compose", version.ref = "constraintCompose" }
+koin-compose = { group = "io.insert-koin", name = "koin-androidx-compose", version.ref = "koinCompose" }
+androidx-ui = { group = "androidx.compose.ui", name = "ui" }
+androidx-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
+androidx-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
+androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
+androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
+androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+#data_local
+roomRuntime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
+roomKtx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
+roomKsp = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
+#testing
+junit = { group = "junit", name = "junit", version.ref = "junit" }
+androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
+androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
+androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
+
+[bundles]
+core = ["androidx-core-ktx", "koinAndroid", "koinAnnotations", "timber"]
+presentation = [
+    "androidx-lifecycle-runtime-ktx", "androidx-activity-compose", "androidx-ui",
+    "androidx-ui-graphics", "androidx-ui-tooling-preview", "androidx-material3",
+    "androidx-appcompat", "material", "androidx-compose-navigation",
+    "koin-compose", "androidx-constraint-layout-compose", "kotlinx-serialization-json"
+]
+presentationDebug = ["androidx-ui-tooling", "androidx-ui-test-manifest"]
+dataLocal = ["roomRuntime", "roomKtx"]
+testing = ["junit"]
+androidTesting = ["androidx-junit", "androidx-espresso-core"]
+
+[plugins]
+androidApplication = { id = "com.android.application", version.ref = "agp" }
+androidLibrary = { id = "com.android.library", version.ref = "agp" }
+jetbrainsKotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+jetbrainsKotlinSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+composeCompiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+jetbrainsKotlinJvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrainsKotlinJvm" }
+
