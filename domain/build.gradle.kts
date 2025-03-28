@@ -29,20 +29,10 @@ android {
         jvmTarget = JavaVersion.VERSION_21.toString()
     }
 }
-java {
-    sourceCompatibility = JavaVersion.VERSION_21
-    targetCompatibility = JavaVersion.VERSION_21
-}
-kotlin {
-    compilerOptions {
-        jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_21
-    }
-}
-
-
-ksp {
-    arg("KOIN_CONFIG_CHECK", "true")
-}
+//
+//ksp {
+//    arg("KOIN_CONFIG_CHECK", "true")
+//}
 
 dependencies {
     ksp(libs.koinKsp)
