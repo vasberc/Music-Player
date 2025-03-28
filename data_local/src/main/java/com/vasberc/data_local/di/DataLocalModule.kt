@@ -2,8 +2,8 @@ package com.vasberc.data_local.di
 
 import android.content.Context
 import androidx.room.Room
-import com.vasberc.data_local.dao.SessionDao
-import com.vasberc.data_local.db.ChessQuizDb
+import com.vasberc.data_local.dao.ExampleDao
+import com.vasberc.data_local.db.ExampleDb
 import org.koin.core.annotation.ComponentScan
 import org.koin.core.annotation.Module
 import org.koin.core.annotation.Single
@@ -13,15 +13,15 @@ import org.koin.core.annotation.Single
 class DataLocalModule
 
 @Single
-fun provideDb(context: Context): ChessQuizDb {
+fun provideDb(context: Context): ExampleDb {
     return Room.databaseBuilder(
         context = context,
-        klass = ChessQuizDb::class.java,
-        name = "chess_quiz_db"
+        klass = ExampleDb::class.java,
+        name = "example_db"
     ).build()
 }
 
 @Single
-fun provideSessionDao(dataBase: ChessQuizDb): SessionDao {
-    return dataBase.sessionDao()
+fun provideExampleDao(dataBase: ExampleDb): ExampleDao {
+    return dataBase.exampleDao()
 }

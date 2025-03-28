@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.vasberc.chessquiz"
+    namespace = "com.vasberc.musicplayer"
     compileSdk = 35
 
     //For KSP to access generated code
@@ -18,7 +18,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.vasberc.chessquiz"
+        applicationId = "com.vasberc.musicplayer"
         minSdk = 26
         targetSdk = 35
         versionCode = 1
@@ -51,6 +51,7 @@ ksp {
 
 dependencies {
     implementation(project(":presentation"))
+    implementation(project(":domain"))
     implementation(project(":data_local"))
     ksp(libs.koinKsp)
     implementation(libs.bundles.core)

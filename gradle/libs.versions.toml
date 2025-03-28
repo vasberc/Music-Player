@@ -6,8 +6,8 @@ junit = "4.13.2"
 junitVersion = "1.2.1"
 espressoCore = "3.6.1"
 lifecycleRuntimeKtx = "2.8.7"
-activityCompose = "1.9.3"
-composeBom = "2024.12.01"
+activityCompose = "1.10.1"
+composeBom = "2025.03.01"
 appcompat = "1.7.0"
 material = "1.12.0"
 koinAndroid = "4.0.0"
@@ -15,10 +15,11 @@ koinKsp = "1.4.0"
 ksp = "2.0.20-1.0.25"
 room = "2.6.1"
 timber = "5.0.1"
-composeNavigation = "2.8.5"
+composeNavigation = "2.8.9"
 koinCompose = "4.0.0"
-constraintCompose = "1.1.0"
+constraintCompose = "1.1.1"
 kotlinxSerializationJson = "1.7.3"
+jetbrainsKotlinJvm = "2.0.20"
 
 
 [libraries]
@@ -73,4 +74,5 @@ jetbrainsKotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "k
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 jetbrainsKotlinSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 composeCompiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+jetbrainsKotlinJvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrainsKotlinJvm" }
 

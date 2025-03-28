@@ -1,4 +1,4 @@
-package com.vasberc.chessquiz
+package com.vasberc.musicplayer
 
 import android.app.Application
 import com.vasberc.data_local.di.DataLocalModule
@@ -8,7 +8,7 @@ import org.koin.core.context.startKoin
 import org.koin.ksp.generated.module
 import timber.log.Timber
 
-class ChessQuizApp: Application() {
+class MusicPlayerApp: Application() {
     override fun onCreate() {
         super.onCreate()
         initTimber()
@@ -17,7 +17,7 @@ class ChessQuizApp: Application() {
 
     private fun startKoin() {
         startKoin {
-            androidContext(this@ChessQuizApp)
+            androidContext(this@MusicPlayerApp)
             modules(
                 DataLocalModule().module,
                 PresentationModule().module

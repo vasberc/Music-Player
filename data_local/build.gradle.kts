@@ -36,6 +36,7 @@ ksp {
 }
 
 dependencies {
+    implementation(project(":domain"))
     ksp(libs.koinKsp)
     ksp(libs.roomKsp)
     implementation(libs.bundles.core)

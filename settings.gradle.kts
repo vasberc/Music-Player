@@ -19,7 +19,8 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "ChessQuiz"
+rootProject.name = "MusicPlayer"
 include(":app")
 include(":presentation")
 include(":data_local")
+include(":domain")

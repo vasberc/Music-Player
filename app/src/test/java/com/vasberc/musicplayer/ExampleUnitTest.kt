@@ -1,4 +1,4 @@
-package com.vasberc.chessquiz
+package com.vasberc.musicplayer
 
 import org.junit.Test
 
