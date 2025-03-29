@@ -50,6 +50,10 @@ ksp {
 }
 
 dependencies {
+    implementation ("androidx.media3:media3-exoplayer:1.6.0")
+    implementation ("androidx.media3:media3-ui:1.6.0")
+    implementation ("androidx.media3:media3-common:1.6.0")
+    implementation ("androidx.media3:media3-session:1.6.0")
     implementation(project(":presentation"))
     implementation(project(":domain"))
     implementation(project(":data_local"))

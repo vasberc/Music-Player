@@ -1,6 +1,5 @@
 package com.vasberc.presentation.screens.home.folder
 
-import android.media.MediaPlayer
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -11,13 +10,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -26,63 +22,30 @@ import com.vasberc.domain.model.FolderModel
 import com.vasberc.domain.model.MusicModel
 import com.vasberc.presentation.componets.MusicFileUiItem
 import com.vasberc.presentation.componets.ToolbarUiItem
+import com.vasberc.presentation.utils.MusicPlayer
 import org.koin.androidx.compose.koinViewModel
+import org.koin.compose.koinInject
 
 @Composable
 fun FolderScreen(
     folderName: String,
-    viewModel: FolderViewModel = koinViewModel()
+    viewModel: FolderViewModel = koinViewModel(),
+    musicPlayer: MusicPlayer = koinInject()
 ) {
     val folder = viewModel.folder.collectAsStateWithLifecycle().value
-    var mediaPlayer: MediaPlayer? by remember { mutableStateOf(null) }
-    var playingSong: MusicModel? by remember { mutableStateOf(null) }
-
-    LaunchedEffect(playingSong) {
-        if (playingSong != null) {
-            mediaPlayer = MediaPlayer().apply {
-                setDataSource(playingSong?.filePath)
-                prepare()
-                start()
-                setOnCompletionListener {
-                    val index =
-                        folder?.files?.indexOf(playingSong)?.takeUnless { it == folder.files.size - 1 } ?: -1
-                    mediaPlayer?.release()
-                    mediaPlayer = null
-                    playingSong = if (index != -1) {
-                        folder?.files?.get(index + 1)
-                    } else {
-                        null
-                    }
-                }
-            }
-        }
-    }
+    val playingSong: MusicModel?  = musicPlayer.playingSongIndex.collectAsStateWithLifecycle().value
 
     FolderScreenContent(
         name = folderName,
         folder = folder,
         playingSong = playingSong,
-        onFileClick = {
-            if (playingSong != null) {
-                mediaPlayer?.stop()
-                mediaPlayer?.release()
-                mediaPlayer = null
-                playingSong = null
+        onFileClick = { index ->
+            folder?.let {
+                musicPlayer.setCurrentFolder(it)
             }
-            playingSong = it
+            musicPlayer.actionPlay(index)
         }
     )
-
-    DisposableEffect(null) {
-        onDispose {
-            if (playingSong != null) {
-                mediaPlayer?.stop()
-                mediaPlayer?.release()
-                mediaPlayer = null
-                playingSong = null
-            }
-        }
-    }
 }
 
 
@@ -91,7 +54,7 @@ fun FolderScreenContent(
     name: String,
     folder: FolderModel?,
     playingSong: MusicModel?,
-    onFileClick: (MusicModel) -> Unit
+    onFileClick: (Int) -> Unit
 ) {
     Column(
         modifier = Modifier.fillMaxSize()
@@ -133,7 +96,7 @@ fun FolderScreenContent(
                         val item = folder.files[index]
                         MusicFileUiItem(
                             item = item,
-                            onClick = { onFileClick(item) },
+                            onClick = { onFileClick(index) },
                             isPlaying = playingSong == item
                         )
                         val isLastItem by remember {

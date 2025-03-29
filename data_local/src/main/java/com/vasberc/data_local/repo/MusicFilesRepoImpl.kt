@@ -84,11 +84,12 @@ class MusicFilesRepoImpl(
                 val album = cursor.getString(albumIndex) ?: "Unknown Album"
                 val duration = cursor.getLong(durationIndex) // Duration in milliseconds
                 val size = cursor.getLong(sizeIndex) // File size in bytes
-                val folderFile = File(filePath).parentFile // Get parent folder
+                val file = File(filePath)
+                val folderFile = file.parentFile // Get parent folder
                 if (ignoreSubFolders && folderFile?.name != dir?.name) {
                     continue
                 }
-                val file = File(filePath)
+
                 if (folderFile != null) {
                     val folderPath = folderFile.absolutePath
                     val folderName = folderFile.name
