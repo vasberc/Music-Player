@@ -35,6 +35,10 @@ android {
 //}
 
 dependencies {
+    implementation ("androidx.media3:media3-exoplayer:1.6.0")
+    implementation ("androidx.media3:media3-ui:1.6.0")
+    implementation ("androidx.media3:media3-common:1.6.0")
+    implementation ("androidx.media3:media3-session:1.6.0")
     ksp(libs.koinKsp)
     implementation(libs.bundles.core)
     testImplementation(libs.bundles.testing)

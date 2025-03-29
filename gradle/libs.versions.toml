@@ -22,7 +22,7 @@ kotlinxSerializationJson = "1.7.3"
 jetbrainsKotlinJvm = "2.0.20"
 permissions = "0.31.2-alpha"
 coil = "2.4.0"
-
+media = "1.7.0"
 
 [libraries]
 #core
@@ -31,6 +31,7 @@ koinAndroid = { group = "io.insert-koin", name = "koin-android", version.ref = "
 koinAnnotations = { group = "io.insert-koin", name = "koin-annotations", version.ref = "koinKsp" }
 koinKsp = { group = "io.insert-koin", name = "koin-ksp-compiler", version.ref = "koinKsp" }
 timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "timber" }
+media = { group = "androidx.media", name = "media", version.ref = "media" }
 #presentation
 androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
@@ -59,7 +60,7 @@ androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-co
 androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 
 [bundles]
-core = ["androidx-core-ktx", "koinAndroid", "koinAnnotations", "timber"]
+core = ["androidx-core-ktx", "koinAndroid", "koinAnnotations", "timber", "media"]
 presentation = [
     "androidx-lifecycle-runtime-ktx", "androidx-activity-compose", "androidx-ui",
     "androidx-ui-graphics", "androidx-ui-tooling-preview", "androidx-material3",
