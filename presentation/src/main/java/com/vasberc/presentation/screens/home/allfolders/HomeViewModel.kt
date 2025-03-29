@@ -22,4 +22,9 @@ class HomeViewModel(
             _files.update { getAllMusicFilesUseCase() }
         }
     }
+
+    fun refreshFolders() {
+        _files.update { null }
+        getFiles()
+    }
 }

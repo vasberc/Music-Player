@@ -61,12 +61,29 @@ class MusicFilesRepoImpl(
 
     private fun getMusicFiles(dir: File?, ignoreSubFolders: Boolean) {
         val uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
-        val projection = arrayOf(MediaStore.Audio.Media.DATA)
+        val projection = arrayOf(
+            MediaStore.Audio.Media.DATA,         // File path
+            MediaStore.Audio.Media.TITLE,        // Song title
+            MediaStore.Audio.Media.ARTIST,       // Artist name
+            MediaStore.Audio.Media.ALBUM,        // Album name
+            MediaStore.Audio.Media.DURATION,     // Duration (in ms)
+            MediaStore.Audio.Media.SIZE          // File size (bytes)
+        )
 
         context.contentResolver.query(uri, projection, null, null, null)?.use { cursor ->
             val dataIndex = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA)
+            val titleIndex = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.TITLE)
+            val artistIndex = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ARTIST)
+            val albumIndex = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM)
+            val durationIndex = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DURATION)
+            val sizeIndex = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.SIZE)
             while (cursor.moveToNext()) {
                 val filePath = cursor.getString(dataIndex)
+                val title = cursor.getString(titleIndex) ?: "Unknown"
+                val artist = cursor.getString(artistIndex) ?: "Unknown Artist"
+                val album = cursor.getString(albumIndex) ?: "Unknown Album"
+                val duration = cursor.getLong(durationIndex) // Duration in milliseconds
+                val size = cursor.getLong(sizeIndex) // File size in bytes
                 val folderFile = File(filePath).parentFile // Get parent folder
                 if (ignoreSubFolders && folderFile?.name != dir?.name) {
                     continue
@@ -82,7 +99,12 @@ class MusicFilesRepoImpl(
                     folderFiles[folderName]?.add(
                         MusicModel(
                             fileName = file.name,
-                            filePath = file.absolutePath
+                            filePath = file.absolutePath,
+                            title = title,
+                            artist = artist,
+                            album = album,
+                            duration = duration,
+                            size = size
                         )
                     )
                 }
