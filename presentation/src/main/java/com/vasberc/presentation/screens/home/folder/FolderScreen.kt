@@ -12,7 +12,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -22,6 +24,7 @@ import com.vasberc.domain.model.MusicModel
 import com.vasberc.presentation.componets.MusicFileUiItem
 import com.vasberc.presentation.componets.RequestPermissionBaseScreen
 import com.vasberc.presentation.componets.ToolbarUiItem
+import com.vasberc.presentation.componets.listcategoriesdialog.ListCategoriesDialog
 import com.vasberc.presentation.utils.MusicPlayer
 import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.koinInject
@@ -48,6 +51,9 @@ fun FolderScreen(
                         musicPlayer.setCurrentFolder(it)
                     }
                     musicPlayer.actionPlay(index)
+                },
+                onAddToPlaylist = { index, category ->
+                    viewModel.addToPlaylist(index, category)
                 }
             )
         }
@@ -61,7 +67,8 @@ fun FolderScreenContent(
     folder: FolderModel?,
     playingSong: MusicModel?,
     isPaused: Boolean,
-    onFileClick: (Int) -> Unit
+    onFileClick: (Int) -> Unit,
+    onAddToPlaylist: (Int, String) -> Unit
 ) {
     Column(
         modifier = Modifier.fillMaxSize()
@@ -93,6 +100,9 @@ fun FolderScreenContent(
             }
 
             else -> {
+                var displayCategoriesDialogForItem by remember {
+                    mutableStateOf<MusicModel?>(null)
+                }
                 LazyColumn(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -105,7 +115,10 @@ fun FolderScreenContent(
                             item = item,
                             onClick = { onFileClick(index) },
                             isPlaying = playingSong == item,
-                            isPaused = isPaused
+                            isPaused = isPaused,
+                            onAddToPlaylist = {
+                                displayCategoriesDialogForItem = item
+                            }
                         )
                         val isLastItem by remember {
                             derivedStateOf {
@@ -117,6 +130,17 @@ fun FolderScreenContent(
                         }
                     }
                 }
+
+                ListCategoriesDialog(
+                    item = displayCategoriesDialogForItem,
+                    onDismiss = {
+                        displayCategoriesDialogForItem = null
+                    },
+                    onItemAdded = {
+                        onAddToPlaylist(folder.files.indexOf(displayCategoriesDialogForItem), it)
+                        displayCategoriesDialogForItem = null
+                    }
+                )
             }
         }
     }

@@ -12,7 +12,8 @@ data class MusicModel(
     val artist: String,
     val album: String,
     val duration: Long,
-    val size: Long
+    val size: Long,
+    val listsAdded: List<String>
 ) {
     @OptIn(UnstableApi::class)
     fun asMediaItem(): MediaItem {
