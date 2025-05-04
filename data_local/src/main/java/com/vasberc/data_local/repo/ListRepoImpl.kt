@@ -15,13 +15,10 @@ class ListRepoImpl(
     private val listedItemDao: ListedItemDao
 ): ListRepo {
 
-    init {
-        CoroutineScope(Dispatchers.IO).launch {
-            //Add default list
-            listDao.insertList(ListEntity("Favorites", false))
-        }
+    override suspend fun getAllLists(): List<String> {
+        listDao.insertList(ListEntity("Favorites", false))//default
+        return listDao.getAllLists().map { it.name }
     }
-    override suspend fun getAllLists(): List<String> = listDao.getAllLists().map { it.name }
 
     override suspend fun getListFiles(listName: String): List<String> = listedItemDao.getListedItemsForList(listName).map { it.itemPath }
 }
