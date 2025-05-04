@@ -1,6 +1,7 @@
 package com.vasberc.presentation.componets
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -8,11 +9,21 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.AddCircle
+import androidx.compose.material.icons.filled.AddCircleOutline
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Circle
 import androidx.compose.material.icons.filled.Pause
+import androidx.compose.material.icons.outlined.Add
+import androidx.compose.material.icons.outlined.AddCircle
+import androidx.compose.material.icons.outlined.Circle
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -33,7 +44,8 @@ fun MusicFileUiItem(
     item: MusicModel,
     isPlaying: Boolean,
     isPaused: Boolean,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    onAddToPlaylist: () -> Unit
 ) {
     Row(
         modifier = Modifier
@@ -91,7 +103,34 @@ fun MusicFileUiItem(
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
-                Spacer(modifier = Modifier.width(1.dp))
+                Spacer(modifier = Modifier.width(2.dp))
+                Box {
+                    Icon(
+                        imageVector = if (item.listsAdded.isEmpty())
+                            Icons.Default.AddCircleOutline
+                        else
+                            Icons.Outlined.Circle,
+                        contentDescription = if (item.listsAdded.isEmpty())
+                            "Add to list"
+                        else
+                            "Added to ${item.listsAdded.size} lists click to add it to an other list",
+                        modifier = Modifier.background(
+                            color = if (item.listsAdded.isEmpty()) Color.Transparent else Color.Green,
+                            shape = CircleShape
+                        ).clickable {
+                            onAddToPlaylist()
+                        }
+                    )
+                    if (item.listsAdded.isNotEmpty()) {
+                        Text(
+                            text = "${item.listsAdded.size}",
+                            fontSize = 12.sp,
+                            color = Color.Black,
+                            modifier = Modifier.align(Alignment.Center)
+                        )
+                    }
+                }
+                Spacer(modifier = Modifier.width(5.dp))
                 Text(
                     text = item.duration.toDurationString(),
                     fontSize = 12.sp,
@@ -126,9 +165,13 @@ fun PreviewMusicFileUiItem() {
             artist = "artist",
             album = "album",
             duration = 1000L,
-            size = 1000000L
+            size = 1000000L,
+            listsAdded = listOf("", "")
         ),
         isPlaying = false,
-        isPaused = false
-    ) { }
+        isPaused = false,
+        onClick = {},
+        onAddToPlaylist = {}
+
+    )
 }
