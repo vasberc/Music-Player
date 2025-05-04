@@ -5,9 +5,6 @@ import com.vasberc.data_local.dao.ListedItemDao
 import com.vasberc.data_local.entity.ListEntity
 import com.vasberc.data_local.entity.ListedItemEntity
 import com.vasberc.domain.repo.ListRepo
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import org.koin.core.annotation.Factory
 
 @Factory
@@ -21,7 +18,7 @@ class ListRepoImpl(
         return listDao.getAllLists().map { it.name }
     }
 
-    override suspend fun getListFiles(listName: String): List<String> = listedItemDao.getListedItemsForList(listName).map { it.itemPath }
+    override suspend fun getListFilesPath(listName: String): List<String> = listedItemDao.getListedItemsForList(listName).map { it.itemPath }
 
     override suspend fun addList(listName: String) {
         listDao.insertList(ListEntity(listName, true))
