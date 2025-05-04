@@ -15,4 +15,5 @@ interface MusicPlayer {
 
     val playingSongIndex: StateFlow<MusicModel?>
     val mediaSession: MediaSession?
+    val isPlaying: StateFlow<Boolean>
 }
