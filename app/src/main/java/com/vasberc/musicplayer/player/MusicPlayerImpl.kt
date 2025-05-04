@@ -17,9 +17,13 @@ import com.vasberc.domain.model.MusicModel
 import com.vasberc.musicplayer.service.MyMediaBrowserService
 import com.vasberc.presentation.utils.MediaSessionListener
 import com.vasberc.presentation.utils.MusicPlayer
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import org.koin.core.annotation.Single
 
 @UnstableApi
@@ -45,6 +49,9 @@ internal class MusicPlayerImpl(
 
     private val _playingSongIndex: MutableStateFlow<MusicModel?> = MutableStateFlow(null)
     override val playingSongIndex = _playingSongIndex.asStateFlow()
+
+    private val _isPlaying: MutableStateFlow<Boolean> = MutableStateFlow(true)
+    override val isPlaying = _isPlaying.asStateFlow()
 
     private fun iniSession() {
         val player = ExoPlayer.Builder(context).build()
@@ -84,6 +91,14 @@ internal class MusicPlayerImpl(
         }
     }
 
+    override fun onIsPlayingChanged(isPlaying: Boolean) {
+        super.onIsPlayingChanged(isPlaying)
+        CoroutineScope(Dispatchers.Main).launch {
+            delay(200)
+            _isPlaying.update { mediaSession?.player?.isPlaying != false }
+        }
+    }
+
     override fun actionPlay(index: Int) {
         val intent = Intent(MyMediaBrowserService.ACTION_PLAY).apply {
             putExtra(MyMediaBrowserService.SONG_INDEX, index)
@@ -112,6 +127,7 @@ internal class MusicPlayerImpl(
         mediaSessionListener: MediaSessionListener,
         songIndex: Int
     ) {
+        _isPlaying.update { true }
         this.mediaSessionListener = mediaSessionListener
         mediaSession?.player?.apply {
             seekToDefaultPosition(songIndex)

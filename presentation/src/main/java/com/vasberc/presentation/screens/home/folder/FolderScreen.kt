@@ -32,13 +32,15 @@ fun FolderScreen(
     viewModel: FolderViewModel = koinViewModel(),
     musicPlayer: MusicPlayer = koinInject()
 ) {
-    val folder = viewModel.folder.collectAsStateWithLifecycle().value
-    val playingSong: MusicModel?  = musicPlayer.playingSongIndex.collectAsStateWithLifecycle().value
+    val folder by viewModel.folder.collectAsStateWithLifecycle()
+    val isPlaying by musicPlayer.isPlaying.collectAsStateWithLifecycle()
+    val playingSong: MusicModel? by musicPlayer.playingSongIndex.collectAsStateWithLifecycle()
 
     FolderScreenContent(
         name = folderName,
         folder = folder,
         playingSong = playingSong,
+        isPaused = !isPlaying,
         onFileClick = { index ->
             folder?.let {
                 musicPlayer.setCurrentFolder(it)
@@ -54,6 +56,7 @@ fun FolderScreenContent(
     name: String,
     folder: FolderModel?,
     playingSong: MusicModel?,
+    isPaused: Boolean,
     onFileClick: (Int) -> Unit
 ) {
     Column(
@@ -97,7 +100,8 @@ fun FolderScreenContent(
                         MusicFileUiItem(
                             item = item,
                             onClick = { onFileClick(index) },
-                            isPlaying = playingSong == item
+                            isPlaying = playingSong == item,
+                            isPaused = isPaused
                         )
                         val isLastItem by remember {
                             derivedStateOf {
