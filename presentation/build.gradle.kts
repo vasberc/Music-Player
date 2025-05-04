@@ -54,6 +54,11 @@ ksp {
 }
 
 dependencies {
+    implementation ("androidx.compose.material:material-icons-extended:1.6.0")
+    implementation("androidx.media3:media3-ui-compose:1.6.0")
+    implementation ("androidx.media3:media3-exoplayer:1.6.0")
+    implementation ("androidx.media3:media3-common:1.6.0")
+    implementation ("androidx.media3:media3-session:1.6.0")
     implementation(project(":domain"))
     implementation(platform(libs.androidx.compose.bom))
     ksp(libs.koinKsp)
