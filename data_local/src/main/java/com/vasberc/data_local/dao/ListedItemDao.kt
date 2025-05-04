@@ -13,4 +13,7 @@ interface ListedItemDao {
 
     @Query("SELECT * FROM listed_items WHERE list = :listName")
     suspend fun getListedItemsForList(listName: String): List<ListedItemEntity>
+
+    @Query("SELECT list FROM listed_items WHERE item_path = :itemPath")
+    suspend fun getListsForItem(itemPath: String): List<String>
 }

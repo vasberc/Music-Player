@@ -105,7 +105,8 @@ class MusicFilesRepoImpl(
                             artist = artist,
                             album = album,
                             duration = duration,
-                            size = size
+                            size = size,
+                            listsAdded = listOf()//will handled on domain layer
                         )
                     )
                 }
