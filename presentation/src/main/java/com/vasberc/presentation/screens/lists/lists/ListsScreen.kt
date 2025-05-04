@@ -1,4 +1,4 @@
-package com.vasberc.presentation.screens.lists
+package com.vasberc.presentation.screens.lists.lists
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

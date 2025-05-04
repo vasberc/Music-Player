@@ -1,13 +1,13 @@
 package com.vasberc.presentation.navigation.listsnavigation
 
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
-import com.vasberc.presentation.screens.lists.ListScreen
+import com.vasberc.presentation.screens.lists.list.SelectedListScreen
+import com.vasberc.presentation.screens.lists.lists.ListScreen
 import kotlinx.serialization.Serializable
 
 @Composable
@@ -18,7 +18,7 @@ fun ListsNavigation(navController: NavHostController, modifier: Modifier = Modif
         }
         composable<ListsRoute.List> { backStackEntry ->
             val list =  backStackEntry.toRoute<ListsRoute.List>()
-            Text(list.listName)
+            SelectedListScreen(list.listName)
         }
     }
 }
