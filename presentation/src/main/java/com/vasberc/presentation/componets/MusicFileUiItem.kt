@@ -11,6 +11,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Pause
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -29,6 +32,7 @@ import com.vasberc.presentation.utils.toDurationString
 fun MusicFileUiItem(
     item: MusicModel,
     isPlaying: Boolean,
+    isPaused: Boolean,
     onClick: () -> Unit
 ) {
     Row(
@@ -49,7 +53,16 @@ fun MusicFileUiItem(
                 contentDescription = item.fileName,
                 modifier = Modifier.size(50.dp)
             )
-            EqualizerIcon(isPlaying)
+            if (isPlaying && !isPaused) {
+                EqualizerIcon()
+            }
+            if (isPlaying && isPaused) {
+                Icon(
+                    imageVector = Icons.Default.Pause,
+                    contentDescription = "Paused",
+                    modifier = Modifier.size(30.dp)
+                )
+            }
         }
 
         Spacer(modifier = Modifier.width(5.dp))
@@ -106,7 +119,7 @@ fun MusicFileUiItem(
 @Composable
 fun PreviewMusicFileUiItem() {
     MusicFileUiItem(
-        MusicModel(
+        item = MusicModel(
             fileName = "filename",
             filePath = "filepath",
             title = "title3333333333333333333333333333333333333333",
@@ -115,6 +128,7 @@ fun PreviewMusicFileUiItem() {
             duration = 1000L,
             size = 1000000L
         ),
-        false
+        isPlaying = false,
+        isPaused = false
     ) { }
 }
