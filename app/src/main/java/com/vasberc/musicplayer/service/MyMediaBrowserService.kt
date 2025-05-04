@@ -21,9 +21,9 @@ class MyMediaBrowserService : Service(), MediaSessionListener {
         notificationManager.createNotificationChannel()
     }
 
-    override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         Timber.d("MediaBrowserService onStartCommand")
-        val action = intent.action
+        val action = intent?.action
         when (action) {
             ACTION_PLAY -> {
                 musicPlayer.initMediaPlayerAndStart(this, intent.getIntExtra(SONG_INDEX, 0))

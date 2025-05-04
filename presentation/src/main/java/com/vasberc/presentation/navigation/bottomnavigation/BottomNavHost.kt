@@ -7,7 +7,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.vasberc.presentation.navigation.homenavigation.HomeNavigation
-import com.vasberc.presentation.screens.settings.SettingsScreen
+import com.vasberc.presentation.navigation.listsnavigation.ListsNavigation
+import com.vasberc.presentation.screens.lists.ListScreen
 
 @Composable
 fun BottomNavHost(navController: NavHostController, modifier: Modifier = Modifier) {
@@ -18,7 +19,9 @@ fun BottomNavHost(navController: NavHostController, modifier: Modifier = Modifie
             )
         }
         composable<Route.Settings> {
-            SettingsScreen()
+            ListsNavigation(
+                navController = rememberNavController()
+            )
         }
     }
 }
