@@ -37,6 +37,22 @@ class FolderViewModel(
         }
     }
 
+    fun removeFromPlaylist(index: Int, category: String) {
+        _folder.update { prevFolder ->
+            prevFolder?.copy(
+                files = prevFolder.files.mapIndexed { i, musicModel ->
+                    if (i == index) {
+                        musicModel.copy(
+                            listsAdded = musicModel.listsAdded - category
+                        )
+                    } else {
+                        musicModel
+                    }
+                }
+            )
+        }
+    }
+
     val folderPath = savedStateHandle.toRoute<HomeRoute.Folder>().folderPath
     private val _folder = MutableStateFlow<FolderModel?>(null)
     val folder = _folder.onStart {
