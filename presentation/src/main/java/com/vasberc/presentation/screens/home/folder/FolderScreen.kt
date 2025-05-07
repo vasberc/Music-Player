@@ -54,6 +54,9 @@ fun FolderScreen(
                 },
                 onAddToPlaylist = { index, category ->
                     viewModel.addToPlaylist(index, category)
+                },
+                onRemoveFromPlaylist = { index, category ->
+                    viewModel.removeFromPlaylist(index, category)
                 }
             )
         }
@@ -68,7 +71,8 @@ fun FolderScreenContent(
     playingSong: MusicModel?,
     isPaused: Boolean,
     onFileClick: (Int) -> Unit,
-    onAddToPlaylist: (Int, String) -> Unit
+    onAddToPlaylist: (Int, String) -> Unit,
+    onRemoveFromPlaylist: (Int, String) -> Unit
 ) {
     Column(
         modifier = Modifier.fillMaxSize()
@@ -138,6 +142,10 @@ fun FolderScreenContent(
                     },
                     onItemAdded = {
                         onAddToPlaylist(folder.files.indexOf(displayCategoriesDialogForItem), it)
+                        displayCategoriesDialogForItem = null
+                    },
+                    onItemRemoved = {
+                        onRemoveFromPlaylist(folder.files.indexOf(displayCategoriesDialogForItem), it)
                         displayCategoriesDialogForItem = null
                     }
                 )

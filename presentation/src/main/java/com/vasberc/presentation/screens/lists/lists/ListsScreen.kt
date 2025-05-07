@@ -28,7 +28,7 @@ fun ListScreen(
     navHostController: NavHostController,
     viewModel: ListsViewModel = koinViewModel()
 ) {
-    val lists by viewModel.lists.collectAsStateWithLifecycle()
+    val lists by viewModel.lists.collectAsStateWithLifecycle(null)
     ListScreenContent(
         lists = lists,
         onItemSelected = {

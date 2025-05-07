@@ -12,9 +12,11 @@ class ListRepoImpl(
     private val listDao: ListDao,
     private val listedItemDao: ListedItemDao
 ): ListRepo {
+    override suspend fun insertDefaultCategories() {
+        listDao.insertList(ListEntity("Favorites", false))//default
+    }
 
     override suspend fun getAllLists(): List<String> {
-        listDao.insertList(ListEntity("Favorites", false))//default
         return listDao.getAllLists().map { it.name }
     }
 
@@ -26,6 +28,10 @@ class ListRepoImpl(
 
     override suspend fun addListItem(listName: String, itemPath: String) {
         listedItemDao.insertListedItem(ListedItemEntity(itemPath = itemPath, list = listName))
+    }
+
+    override suspend fun removeListItem(listName: String, itemPath: String) {
+        listedItemDao.removeListedItem(itemPath = itemPath, listName = listName)
     }
 
     override suspend fun getListsOfFile(string: String): List<String> {

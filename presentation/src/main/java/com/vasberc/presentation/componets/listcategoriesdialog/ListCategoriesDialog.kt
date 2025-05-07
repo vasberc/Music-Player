@@ -17,7 +17,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddCircleOutline
-import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.RemoveCircleOutline
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -40,7 +40,8 @@ import org.koin.androidx.compose.koinViewModel
 fun ListCategoriesDialog(
     item: MusicModel?,
     onDismiss: () -> Unit,
-    onItemAdded: (String) -> Unit
+    onItemAdded: (String) -> Unit,
+    onItemRemoved: (String) -> Unit
 ) {
     val isVisible by remember(item) {
         derivedStateOf {
@@ -51,9 +52,14 @@ fun ListCategoriesDialog(
     if (isVisible) {
         val viewModel: ListCategoriesDialogViewModel = koinViewModel()
         val categories by viewModel.categories.collectAsStateWithLifecycle()
-        ListCategoriesDialogContent(categories, item, onDismiss) {
-            viewModel.addCategory(it, item)
-            onItemAdded(it)
+        ListCategoriesDialogContent(categories, item, onDismiss) { category, isAdded ->
+            if (isAdded) {
+                viewModel.removeCategory(category, item)
+                onItemRemoved(category)
+            } else {
+                viewModel.addCategory(category, item)
+                onItemAdded(category)
+            }
         }
     }
 }
@@ -63,7 +69,7 @@ fun ListCategoriesDialogContent(
     categoryList: List<String>?,
     item: MusicModel?,
     onDismiss: () -> Unit,
-    onItemSelected: (String) -> Unit
+    onItemSelected: (String, Boolean) -> Unit
 ) {
     Dialog(
         onDismissRequest = onDismiss
@@ -117,25 +123,25 @@ fun ListCategoriesDialogContent(
                                 verticalAlignment = Alignment.CenterVertically,
                                 horizontalArrangement = Arrangement.Center,
                                 modifier = Modifier.padding(5.dp)
-                                    .clickable(!isAdded) {
-                                        onItemSelected(categoryList[index])
+                                    .clickable {
+                                        onItemSelected(categoryList[index], isAdded)
                                     }
                             ) {
                                 Text(text = categoryList[index])
                                 Spacer(modifier = Modifier.width(5.dp))
                                 Icon(
                                     imageVector = if (isAdded)
-                                        Icons.Default.Check
+                                        Icons.Default.RemoveCircleOutline
                                     else
                                         Icons.Default.AddCircleOutline,
                                     contentDescription = if (isAdded)
-                                        "Added"
+                                        "Click to remove"
                                     else
                                         "Click to add",
                                     tint = if (isAdded)
-                                        Color.Green
+                                        Color.Red
                                     else
-                                        Color.Black
+                                        Color.Green
                                 )
                             }
                             if (!isLastItem) {
@@ -168,6 +174,6 @@ fun ListCategoriesDialogPreview() {
             listsAdded = listOf("Category 1")
         ),
         {},
-        {}
+        {_, _ -> }
     )
 }

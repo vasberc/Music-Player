@@ -11,6 +11,9 @@ interface ListedItemDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertListedItem(listedItem: ListedItemEntity)
 
+    @Query("DELETE FROM listed_items WHERE list = :listName AND item_path = :itemPath")
+    suspend fun removeListedItem(listName: String, itemPath: String)
+
     @Query("SELECT * FROM listed_items WHERE list = :listName")
     suspend fun getListedItemsForList(listName: String): List<ListedItemEntity>
 
