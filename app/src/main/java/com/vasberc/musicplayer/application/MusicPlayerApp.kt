@@ -11,6 +11,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import org.koin.android.ext.koin.androidContext
+import org.koin.core.context.startKoin
 import org.koin.ksp.generated.module
 import timber.log.Timber
 
@@ -19,15 +20,19 @@ class MusicPlayerApp: Application() {
     override fun onCreate() {
         super.onCreate()
         initTimber()
-        startKoin()
+        initKoin()
+        executeAppStartUseCase()
+    }
+
+    private fun executeAppStartUseCase() {
         val appStartUseCase: AppStartUseCase by inject()
         CoroutineScope(Dispatchers.Main).launch {
             appStartUseCase()
         }
     }
 
-    private fun startKoin() {
-        org.koin.core.context.startKoin {
+    private fun initKoin() {
+        startKoin {
             androidContext(this@MusicPlayerApp)
             modules(
                 AppModule().module,

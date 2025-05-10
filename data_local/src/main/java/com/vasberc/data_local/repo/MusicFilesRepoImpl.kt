@@ -1,59 +1,66 @@
 package com.vasberc.data_local.repo
 
 import android.content.Context
-import android.os.Environment
 import android.provider.MediaStore
 import com.vasberc.domain.model.FolderModel
 import com.vasberc.domain.model.MusicModel
 import com.vasberc.domain.repo.MusicFilesRepo
-import org.koin.core.annotation.Factory
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.launch
+import org.koin.core.annotation.Single
 import java.io.File
-import java.util.Locale
 
 
-@Factory
+@Single
 class MusicFilesRepoImpl(
     private val context: Context
 ) : MusicFilesRepo {
-    override suspend fun getAllMusicFiles(): List<FolderModel> {
-
-        folderFiles.clear()
-        foldersPath.clear()
-        getMusicFiles(null, false)
-
-        return folderFiles.mapNotNull { (folder, files) ->
-            if (files.isEmpty()) {
-                null
-            } else {
-                FolderModel(
-                    name = folder,
-                    files = files,
-                    path = foldersPath[folder] ?: ""
-                )
-            }
-        }.also {
-            foldersPath.clear()
-            folderFiles.clear()
+    private val _musicFileFlow = MutableStateFlow<List<FolderModel>?>(null)
+    private val musicFileFlow = _musicFileFlow.asStateFlow()
+    override fun getAllMusicFilesFlow(): Flow<List<FolderModel>?> = flow {
+        musicFileFlow.collect {
+            emit(it)
         }
     }
 
-    override suspend fun getFilesOfFolder(folderPath: String): FolderModel {
-        folderFiles.clear()
-        foldersPath.clear()
-        val folder = File(folderPath)
-        folderFiles[folder.name] = mutableListOf()
-        foldersPath[folder.name] = folder.absolutePath
-        getMusicFiles(folder, true)
-        val filesFound = folderFiles[folder.name]
-        return FolderModel(
-            name = folder.name,
-            path = folder.path,
-            files = filesFound ?: listOf()
-        ).also {
-            folderFiles.clear()
-            foldersPath.clear()
-        }
+    override suspend fun refreshAllMusicFiles() {
+        coroutineScope {
+            launch(Dispatchers.IO) {
+                folderFiles.clear()
+                foldersPath.clear()
+                getMusicFiles(null, false)
 
+                folderFiles.mapNotNull { (folder, files) ->
+                    if (files.isEmpty()) {
+                        null
+                    } else {
+                        FolderModel(
+                            name = folder,
+                            files = files,
+                            path = foldersPath[folder] ?: ""
+                        )
+                    }
+                }.also {
+                    _musicFileFlow.value = it
+                    foldersPath.clear()
+                    folderFiles.clear()
+                }
+            }
+        }
+    }
+
+    override fun getFilesOfFolderFlow(folderPath: String): Flow<FolderModel?> = flow {
+        if (musicFileFlow.value == null) {
+            refreshAllMusicFiles()
+        }
+        musicFileFlow.collect {
+            emit(it?.find { it.path == folderPath })
+        }
     }
 
     private val folderFiles: MutableMap<String, MutableList<MusicModel>> = mutableMapOf()

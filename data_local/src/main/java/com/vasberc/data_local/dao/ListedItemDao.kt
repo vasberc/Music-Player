@@ -5,6 +5,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.vasberc.data_local.entity.ListedItemEntity
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface ListedItemDao {
@@ -15,8 +16,8 @@ interface ListedItemDao {
     suspend fun removeListedItem(listName: String, itemPath: String)
 
     @Query("SELECT * FROM listed_items WHERE list = :listName")
-    suspend fun getListedItemsForList(listName: String): List<ListedItemEntity>
+    fun getListedItemsForList(listName: String): Flow<List<ListedItemEntity>>
 
     @Query("SELECT list FROM listed_items WHERE item_path = :itemPath")
-    suspend fun getListsForItem(itemPath: String): List<String>
+    fun getListsForItem(itemPath: String): Flow<List<String>>
 }

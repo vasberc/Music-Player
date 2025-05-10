@@ -1,9 +1,10 @@
 package com.vasberc.domain.repo
 
 import com.vasberc.domain.model.FolderModel
+import kotlinx.coroutines.flow.Flow
 
 interface MusicFilesRepo {
-    suspend fun getAllMusicFiles(): List<FolderModel>
-
-    suspend fun getFilesOfFolder(folderPath: String): FolderModel
+    fun getAllMusicFilesFlow(): Flow<List<FolderModel>?>
+    suspend fun refreshAllMusicFiles()
+    fun getFilesOfFolderFlow(folderPath: String): Flow<FolderModel?>
 }

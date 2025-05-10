@@ -36,10 +36,8 @@ class ListCategoriesDialogViewModel(
         }
     }
 
-    private val _categories = MutableStateFlow<List<String>?>(null)
-    val categories = _categories.onStart {
-        _categories.update { getCategoriesUseCase() }
-    }.stateIn(
+    private val _categories = getCategoriesUseCase()
+    val categories = _categories.stateIn(
         scope = viewModelScope,
         started = SharingStarted.Lazily,
         initialValue = null
