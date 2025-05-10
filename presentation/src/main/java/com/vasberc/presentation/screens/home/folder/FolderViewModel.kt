@@ -21,45 +21,41 @@ class FolderViewModel(
     getFilesOfFolderUseCase: GetFilesOfFolderUseCase,
     savedStateHandle: SavedStateHandle
 ): ViewModel() {
-    fun addToPlaylist(index: Int, category: String) {
-        _folder.update { prevFolder ->
-            prevFolder?.copy(
-                files = prevFolder.files.mapIndexed { i, musicModel ->
-                    if (i == index) {
-                        musicModel.copy(
-                            listsAdded = musicModel.listsAdded + category
-                        )
-                    } else {
-                        musicModel
-                    }
-                }
-            )
-        }
-    }
+//    fun addToPlaylist(index: Int, category: String) {
+//        _folder.update { prevFolder ->
+//            prevFolder?.copy(
+//                files = prevFolder.files.mapIndexed { i, musicModel ->
+//                    if (i == index) {
+//                        musicModel.copy(
+//                            listsAdded = musicModel.listsAdded + category
+//                        )
+//                    } else {
+//                        musicModel
+//                    }
+//                }
+//            )
+//        }
+//    }
 
-    fun removeFromPlaylist(index: Int, category: String) {
-        _folder.update { prevFolder ->
-            prevFolder?.copy(
-                files = prevFolder.files.mapIndexed { i, musicModel ->
-                    if (i == index) {
-                        musicModel.copy(
-                            listsAdded = musicModel.listsAdded - category
-                        )
-                    } else {
-                        musicModel
-                    }
-                }
-            )
-        }
-    }
+//    fun removeFromPlaylist(index: Int, category: String) {
+//        _folder.update { prevFolder ->
+//            prevFolder?.copy(
+//                files = prevFolder.files.mapIndexed { i, musicModel ->
+//                    if (i == index) {
+//                        musicModel.copy(
+//                            listsAdded = musicModel.listsAdded - category
+//                        )
+//                    } else {
+//                        musicModel
+//                    }
+//                }
+//            )
+//        }
+//    }
 
     val folderPath = savedStateHandle.toRoute<HomeRoute.Folder>().folderPath
-    private val _folder = MutableStateFlow<FolderModel?>(null)
-    val folder = _folder.onStart {
-        if (_folder.value == null) {
-            _folder.update { getFilesOfFolderUseCase(folderPath) }
-        }
-    }.stateIn(
+    private val _folder = getFilesOfFolderUseCase(folderPath)
+    val folder = _folder.stateIn(
         scope = viewModelScope,
         started = SharingStarted.Lazily,
         initialValue = null

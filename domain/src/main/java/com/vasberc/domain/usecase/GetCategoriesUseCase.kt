@@ -9,5 +9,5 @@ import org.koin.core.annotation.Factory
 class GetCategoriesUseCase(
     private val listRepo: ListRepo
 ) {
-    suspend operator fun invoke() = withContext(Dispatchers.IO) { listRepo.getAllLists() }
+    operator fun invoke() = listRepo.getAllLists()
 }

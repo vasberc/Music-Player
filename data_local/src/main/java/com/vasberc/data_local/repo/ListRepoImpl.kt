@@ -5,6 +5,8 @@ import com.vasberc.data_local.dao.ListedItemDao
 import com.vasberc.data_local.entity.ListEntity
 import com.vasberc.data_local.entity.ListedItemEntity
 import com.vasberc.domain.repo.ListRepo
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import org.koin.core.annotation.Factory
 
 @Factory
@@ -16,11 +18,11 @@ class ListRepoImpl(
         listDao.insertList(ListEntity("Favorites", false))//default
     }
 
-    override suspend fun getAllLists(): List<String> {
-        return listDao.getAllLists().map { it.name }
+    override fun getAllLists(): Flow<List<String>> {
+        return listDao.getAllLists().map { list -> list.map { it.name } }
     }
 
-    override suspend fun getListFilesPath(listName: String): List<String> = listedItemDao.getListedItemsForList(listName).map { it.itemPath }
+    override fun getListFilesPath(listName: String): Flow<List<String>> = listedItemDao.getListedItemsForList(listName).map { list -> list.map { it.itemPath } }
 
     override suspend fun addList(listName: String) {
         listDao.insertList(ListEntity(listName, true))
@@ -34,7 +36,7 @@ class ListRepoImpl(
         listedItemDao.removeListedItem(itemPath = itemPath, listName = listName)
     }
 
-    override suspend fun getListsOfFile(string: String): List<String> {
+    override fun getListsOfFile(string: String): Flow<List<String>> {
         return listedItemDao.getListsForItem(string)
     }
 }

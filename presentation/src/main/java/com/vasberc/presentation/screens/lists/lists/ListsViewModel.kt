@@ -14,10 +14,8 @@ import org.koin.android.annotation.KoinViewModel
 class ListsViewModel(
     val getListsUseCase: GetListsUseCase
 ): ViewModel() {
-    private val _lists = MutableStateFlow<List<String>?>(null)
-    val lists = _lists.onStart {
-        _lists.update { getListsUseCase() }
-    }.stateIn(
+    private val _lists = getListsUseCase()
+    val lists = _lists.stateIn(
         scope = viewModelScope,
         started = SharingStarted.Lazily,
         initialValue = null

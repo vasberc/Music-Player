@@ -50,12 +50,6 @@ fun SelectedListScreen(
                         musicPlayer.setCurrentFolder(it)
                     }
                     musicPlayer.actionPlay(index)
-                },
-                onAddToPlaylist = { index, category ->
-                    viewModel.addToPlaylist(index, category)
-                },
-                onRemoveFromPlaylist = { index, category ->
-                    viewModel.removeFromPlaylist(index, category)
                 }
             )
         }
