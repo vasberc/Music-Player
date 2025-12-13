@@ -4,9 +4,14 @@ plugins {
     alias(libs.plugins.ksp)
 }
 
+kotlin {
+    // Use Kotlin JVM toolchain to set the target JVM version (replaces deprecated kotlinOptions.jvmTarget)
+    jvmToolchain(21)
+}
+
 android {
     namespace = "com.vasberc.data_local"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         minSdk = 24
@@ -26,17 +31,15 @@ android {
         sourceCompatibility = JavaVersion.VERSION_21
         targetCompatibility = JavaVersion.VERSION_21
     }
-    kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_21.toString()
-    }
 }
 
-ksp {
-    arg("KOIN_CONFIG_CHECK", "true")
-}
+//ksp {
+//    arg("KOIN_CONFIG_CHECK", "true")
+//}
 
 dependencies {
     implementation(project(":domain"))
+    implementation(platform(libs.koin.bom))
     ksp(libs.koinKsp)
     ksp(libs.roomKsp)
     implementation(libs.bundles.core)

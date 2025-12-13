@@ -3,10 +3,12 @@ package com.vasberc.data_local.entity
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
+import androidx.room.Index
 
 @Entity(
     tableName = "listed_items",
     primaryKeys = ["item_path", "list"],
+    indices = [Index(value = ["list"])],
     foreignKeys = [
         ForeignKey(
             entity = ListEntity::class,

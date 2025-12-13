@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.StateFlow
 
 interface MusicPlayer {
     fun setCurrentFolder(folderModel: FolderModel)
-    fun initMediaPlayerAndStart(mediaSessionListener: MediaSessionListener, intExtra: Int)
+    fun initMediaPlayerAndStart(mediaSessionListener: MediaSessionListener, songIndex: Int)
     fun actionPlay(index: Int)
     fun release()
     fun start()

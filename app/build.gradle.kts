@@ -4,9 +4,14 @@ plugins {
     alias(libs.plugins.ksp)
 }
 
+kotlin {
+    // Use Kotlin JVM toolchain to set the target JVM version (replaces deprecated kotlinOptions.jvmTarget)
+    jvmToolchain(21)
+}
+
 android {
     namespace = "com.vasberc.musicplayer"
-    compileSdk = 35
+    compileSdk = 36
 
     //For KSP to access generated code
     applicationVariants.configureEach {
@@ -20,7 +25,7 @@ android {
     defaultConfig {
         applicationId = "com.vasberc.musicplayer"
         minSdk = 26
-        targetSdk = 35
+        targetSdk = 36
         versionCode = 1
         versionName = "1.0"
 
@@ -37,28 +42,23 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    }
-    kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_17.toString()
+        sourceCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = JavaVersion.VERSION_21
     }
 }
 
-ksp {
-    arg("KOIN_CONFIG_CHECK", "true")
-}
+//ksp {
+//    arg("KOIN_CONFIG_CHECK", "true")
+//}
 
 dependencies {
-    implementation ("androidx.media3:media3-exoplayer:1.6.0")
-    implementation ("androidx.media3:media3-ui:1.6.0")
-    implementation ("androidx.media3:media3-common:1.6.0")
-    implementation ("androidx.media3:media3-session:1.6.0")
     implementation(project(":presentation"))
     implementation(project(":domain"))
     implementation(project(":data_local"))
+    implementation(platform(libs.koin.bom))
     ksp(libs.koinKsp)
     implementation(libs.bundles.core)
+    implementation(libs.bundles.app)
     testImplementation(libs.bundles.testing)
     androidTestImplementation(libs.bundles.androidTesting)
 }

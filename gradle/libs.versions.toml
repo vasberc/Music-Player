@@ -1,37 +1,50 @@
 [versions]
-agp = "8.7.3"
-kotlin = "2.0.20"
-coreKtx = "1.16.0"
+agp = "8.13.2"
+kotlin = "2.2.21"
+coreKtx = "1.17.0"
 junit = "4.13.2"
-junitVersion = "1.2.1"
-espressoCore = "3.6.1"
-lifecycleRuntimeKtx = "2.9.0"
-activityCompose = "1.10.1"
-composeBom = "2025.05.00"
-appcompat = "1.7.0"
-material = "1.12.0"
-koinAndroid = "4.0.0"
-koinKsp = "1.4.0"
-ksp = "2.0.20-1.0.25"
-room = "2.7.1"
+junitVersion = "1.3.0"
+espressoCore = "3.7.0"
+lifecycleRuntimeKtx = "2.10.0"
+activityCompose = "1.12.1"
+composeBom = "2025.12.00"
+appcompat = "1.7.1"
+material = "1.13.0"
+#koinAndroid = "4.1.1"
+koinKspCompiler = "2.3.1"
+koinAnnotaions = "2.3.1"
+koin-bom = "4.1.1"
+ksp = "2.3.2"
+room = "2.8.4"
 timber = "5.0.1"
-composeNavigation = "2.9.0"
-koinCompose = "4.0.0"
+composeNavigation = "2.9.6"
+koinCompose = "4.1.1"
 constraintCompose = "1.1.1"
-kotlinxSerializationJson = "1.7.3"
-jetbrainsKotlinJvm = "2.0.20"
-permissions = "0.31.2-alpha"
-coil = "2.4.0"
-media = "1.7.0"
+kotlinxSerializationJson = "1.9.0"
+jetbrainsKotlinJvm = "2.2.21"
+permissions = "0.37.3"
+coil = "2.7.0"
+media = "1.7.1"
+media3 = "1.8.0"
+materialIcons = "1.7.8"
 
 [libraries]
 #core
+koin-bom = { module = "io.insert-koin:koin-bom", version.ref = "koin-bom" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
-koinAndroid = { group = "io.insert-koin", name = "koin-android", version.ref = "koinAndroid" }
-koinAnnotations = { group = "io.insert-koin", name = "koin-annotations", version.ref = "koinKsp" }
-koinKsp = { group = "io.insert-koin", name = "koin-ksp-compiler", version.ref = "koinKsp" }
+koinAndroid = { group = "io.insert-koin", name = "koin-android" }
+koinAnnotations = { group = "io.insert-koin", name = "koin-annotations", version.ref = "koinAnnotaions" }
+koinKsp = { group = "io.insert-koin", name = "koin-ksp-compiler", version.ref = "koinKspCompiler" }
 timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "timber" }
 media = { group = "androidx.media", name = "media", version.ref = "media" }
+
+# AndroidX Media3 artifacts
+media3-exoplayer = { group = "androidx.media3", name = "media3-exoplayer", version.ref = "media3" }
+media3-ui = { group = "androidx.media3", name = "media3-ui", version.ref = "media3" }
+media3-common = { group = "androidx.media3", name = "media3-common", version.ref = "media3" }
+media3-session = { group = "androidx.media3", name = "media3-session", version.ref = "media3" }
+media3-ui-compose = { group = "androidx.media3", name = "media3-ui-compose", version.ref = "media3" }
+
 #presentation
 androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
@@ -40,6 +53,7 @@ androidx-compose-navigation = { group = "androidx.navigation", name = "navigatio
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
 androidx-constraint-layout-compose = { group = "androidx.constraintlayout", name = "constraintlayout-compose", version.ref = "constraintCompose" }
 koin-compose = { group = "io.insert-koin", name = "koin-androidx-compose", version.ref = "koinCompose" }
+material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended", version.ref = "materialIcons" }
 androidx-ui = { group = "androidx.compose.ui", name = "ui" }
 androidx-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
 androidx-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
@@ -61,12 +75,14 @@ androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-man
 
 [bundles]
 core = ["androidx-core-ktx", "koinAndroid", "koinAnnotations", "timber", "media"]
+app = ["media3-exoplayer", "media3-common", "media3-session", "media3-ui"]
 presentation = [
     "androidx-lifecycle-runtime-ktx", "androidx-activity-compose", "androidx-ui",
     "androidx-ui-graphics", "androidx-ui-tooling-preview", "androidx-material3",
     "androidx-appcompat", "material", "androidx-compose-navigation", "coil-compose",
     "koin-compose", "androidx-constraint-layout-compose", "kotlinx-serialization-json",
-    "accompanist-permissions"
+    "accompanist-permissions", "material-icons-extended", "media3-ui-compose", "media3-exoplayer",
+    "media3-common", "media3-session"
 ]
 presentationDebug = ["androidx-ui-tooling", "androidx-ui-test-manifest"]
 dataLocal = ["roomRuntime", "roomKtx"]
@@ -81,4 +97,3 @@ ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 jetbrainsKotlinSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 composeCompiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 jetbrainsKotlinJvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrainsKotlinJvm" }
-
