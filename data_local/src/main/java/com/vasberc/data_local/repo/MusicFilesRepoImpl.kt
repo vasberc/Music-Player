@@ -58,8 +58,8 @@ class MusicFilesRepoImpl(
         if (musicFileFlow.value == null) {
             refreshAllMusicFiles()
         }
-        musicFileFlow.collect {
-            emit(it?.find { it.path == folderPath })
+        musicFileFlow.collect { folderModels ->
+            emit(folderModels?.find { it.path == folderPath })
         }
     }
 

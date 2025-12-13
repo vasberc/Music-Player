@@ -13,9 +13,9 @@ class GetFilesOfFolderUseCase(
 ) {
     operator fun invoke(
         folderPath: String
-    ) = musicFilesRepo.getFilesOfFolderFlow(folderPath).map {
-        it?.copy(
-            files = it.files.map {
+    ) = musicFilesRepo.getFilesOfFolderFlow(folderPath).map { folderModel ->
+        folderModel?.copy(
+            files = folderModel.files.map {
                 it.copy(
                     listsAdded = listRepo.getListsOfFile(it.filePath).first()
                 )

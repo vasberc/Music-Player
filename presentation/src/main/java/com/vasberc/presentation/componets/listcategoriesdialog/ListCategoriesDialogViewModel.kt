@@ -17,7 +17,7 @@ import org.koin.android.annotation.KoinViewModel
 @KoinViewModel
 class ListCategoriesDialogViewModel(
     private val addListedItemUseCase: AddListedItemUseCase,
-    private val getCategoriesUseCase: GetCategoriesUseCase,
+    getCategoriesUseCase: GetCategoriesUseCase,
     private val removeListedItemUseCase: RemoveListedItemUseCase
 ): ViewModel() {
     fun addCategory(category: String, model: MusicModel?) {

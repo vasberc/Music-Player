@@ -8,12 +8,19 @@ import androidx.room.Index
 @Entity(
     tableName = "listed_items",
     primaryKeys = ["item_path", "list"],
-    indices = [Index(value = ["list"])],
+    indices = [Index(value = ["list"]), Index(value = ["item_path"])],
     foreignKeys = [
         ForeignKey(
             entity = ListEntity::class,
             parentColumns = ["name"],
             childColumns = ["list"],
+            onDelete = ForeignKey.CASCADE,
+            onUpdate = ForeignKey.CASCADE
+        ),
+        ForeignKey(
+            entity = MusicEntity::class,
+            parentColumns = ["file_path"],
+            childColumns = ["item_path"],
             onDelete = ForeignKey.CASCADE,
             onUpdate = ForeignKey.CASCADE
         )
