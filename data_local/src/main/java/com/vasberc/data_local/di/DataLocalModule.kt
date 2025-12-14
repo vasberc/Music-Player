@@ -6,6 +6,7 @@ import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.vasberc.data_local.dao.ListDao
 import com.vasberc.data_local.dao.ListedItemDao
+import com.vasberc.data_local.dao.MusicFileDao
 import com.vasberc.data_local.db.MusicPlayerDb
 import com.vasberc.data_local.entity.ListEntity
 import kotlinx.coroutines.CoroutineScope
@@ -37,4 +38,9 @@ fun provideListDao(dataBase: MusicPlayerDb): ListDao {
 @Single
 fun provideListedItemDao(dataBase: MusicPlayerDb): ListedItemDao {
     return dataBase.listedItemDao()
+}
+
+@Single
+fun provideMusicDao(dataBase: MusicPlayerDb): MusicFileDao {
+    return dataBase.musicFileDao()
 }
