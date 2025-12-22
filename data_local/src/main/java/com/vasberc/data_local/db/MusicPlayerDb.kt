@@ -9,7 +9,7 @@ import com.vasberc.data_local.entity.ListedItemEntity
 
 @Database(
     entities = [ListEntity::class, ListedItemEntity::class],
-    version = 1,
+    version = 2,
     exportSchema = false
 )
 abstract class MusicPlayerDb: RoomDatabase() {

@@ -8,7 +8,7 @@ import androidx.room.Index
 @Entity(
     tableName = "listed_items",
     primaryKeys = ["item_path", "list"],
-    indices = [Index(value = ["list"])],
+    indices = [Index(value = ["list"]), Index(value = ["item_path"])],
     foreignKeys = [
         ForeignKey(
             entity = ListEntity::class,
