@@ -16,13 +16,6 @@ import androidx.room.Index
             childColumns = ["list"],
             onDelete = ForeignKey.CASCADE,
             onUpdate = ForeignKey.CASCADE
-        ),
-        ForeignKey(
-            entity = MusicEntity::class,
-            parentColumns = ["file_path"],
-            childColumns = ["item_path"],
-            onDelete = ForeignKey.CASCADE,
-            onUpdate = ForeignKey.CASCADE
         )
     ]
 )

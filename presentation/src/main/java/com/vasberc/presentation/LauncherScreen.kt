@@ -1,6 +1,5 @@
 package com.vasberc.presentation
 
-import androidx.annotation.OptIn
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -20,7 +19,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.media3.common.util.UnstableApi
 import androidx.navigation.compose.rememberNavController
 import com.vasberc.presentation.componets.BottomNavigation
 import com.vasberc.presentation.componets.ControlButtons
@@ -28,7 +26,6 @@ import com.vasberc.presentation.navigation.bottomnavigation.BottomNavHost
 import com.vasberc.presentation.utils.MusicPlayer
 import org.koin.compose.koinInject
 
-@OptIn(UnstableApi::class)
 @Composable
 fun LauncherScreen(
     player: MusicPlayer = koinInject()

@@ -18,6 +18,9 @@ interface ListedItemDao {
     @Query("SELECT * FROM listed_items WHERE list = :listName")
     fun getListedItemsForList(listName: String): Flow<List<ListedItemEntity>>
 
+    @Query("SELECT * FROM listed_items")
+    fun getListedItems(): Flow<List<ListedItemEntity>>
+
     @Query("SELECT list FROM listed_items WHERE item_path = :itemPath")
     fun getListsForItem(itemPath: String): Flow<List<String>>
 }

@@ -1,5 +1,8 @@
 package com.vasberc.domain.model
 
+import androidx.compose.runtime.Stable
+
+@Stable
 data class FolderModel(
     val name: String,
     val path: String,

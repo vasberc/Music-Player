@@ -11,17 +11,17 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import org.koin.androidx.compose.koinViewModel
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import com.vasberc.presentation.componets.ListUiItem
 import com.vasberc.presentation.componets.ToolbarUiItem
 import com.vasberc.presentation.navigation.listsnavigation.ListsRoute
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun ListScreen(

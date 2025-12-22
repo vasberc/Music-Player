@@ -2,20 +2,15 @@ package com.vasberc.data_local.di
 
 import android.content.Context
 import androidx.room.Room
-import androidx.room.RoomDatabase
-import androidx.sqlite.db.SupportSQLiteDatabase
 import com.vasberc.data_local.dao.ListDao
 import com.vasberc.data_local.dao.ListedItemDao
-import com.vasberc.data_local.dao.MusicFileDao
 import com.vasberc.data_local.db.MusicPlayerDb
-import com.vasberc.data_local.entity.ListEntity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.SupervisorJob
 import org.koin.core.annotation.ComponentScan
 import org.koin.core.annotation.Module
 import org.koin.core.annotation.Single
-import org.koin.java.KoinJavaComponent.inject
 
 @Module
 @ComponentScan("com.vasberc.data_local")
@@ -41,6 +36,6 @@ fun provideListedItemDao(dataBase: MusicPlayerDb): ListedItemDao {
 }
 
 @Single
-fun provideMusicDao(dataBase: MusicPlayerDb): MusicFileDao {
-    return dataBase.musicFileDao()
+fun provideApplicationScope(): CoroutineScope {
+    return CoroutineScope(Dispatchers.IO + SupervisorJob())
 }

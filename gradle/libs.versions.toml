@@ -1,16 +1,15 @@
 [versions]
 agp = "8.13.2"
-kotlin = "2.2.21"
+kotlin = "2.3.0"
 coreKtx = "1.17.0"
 junit = "4.13.2"
 junitVersion = "1.3.0"
 espressoCore = "3.7.0"
 lifecycleRuntimeKtx = "2.10.0"
-activityCompose = "1.12.1"
-composeBom = "2025.12.00"
+activityCompose = "1.12.2"
+composeBom = "2025.12.01"
 appcompat = "1.7.1"
 material = "1.13.0"
-#koinAndroid = "4.1.1"
 koinKspCompiler = "2.3.1"
 koinAnnotaions = "2.3.1"
 koin-bom = "4.1.1"
@@ -21,12 +20,13 @@ composeNavigation = "2.9.6"
 koinCompose = "4.1.1"
 constraintCompose = "1.1.1"
 kotlinxSerializationJson = "1.9.0"
-jetbrainsKotlinJvm = "2.2.21"
+jetbrainsKotlinJvm = "2.3.0"
 permissions = "0.37.3"
 coil = "2.7.0"
 media = "1.7.1"
-media3 = "1.8.0"
+media3 = "1.9.0"
 materialIcons = "1.7.8"
+runtimeAnnotation = "1.10.0"
 
 [libraries]
 #core
@@ -72,6 +72,7 @@ junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
 androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
+androidx-compose-runtime-annotation = { group = "androidx.compose.runtime", name = "runtime-annotation", version.ref = "runtimeAnnotation" }
 
 [bundles]
 core = ["androidx-core-ktx", "koinAndroid", "koinAnnotations", "timber", "media"]
@@ -84,6 +85,7 @@ presentation = [
     "accompanist-permissions", "material-icons-extended", "media3-ui-compose", "media3-exoplayer",
     "media3-common", "media3-session"
 ]
+domain = ["androidx-compose-runtime-annotation"]
 presentationDebug = ["androidx-ui-tooling", "androidx-ui-test-manifest"]
 dataLocal = ["roomRuntime", "roomKtx"]
 testing = ["junit"]

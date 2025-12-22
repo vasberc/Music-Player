@@ -2,6 +2,7 @@ package com.vasberc.data_local.repo
 
 import android.content.Context
 import android.provider.MediaStore
+import com.vasberc.data_local.dao.ListedItemDao
 import com.vasberc.domain.model.FolderModel
 import com.vasberc.domain.model.MusicModel
 import com.vasberc.domain.repo.MusicFilesRepo
@@ -9,8 +10,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import org.koin.core.annotation.Single
 import java.io.File
@@ -19,22 +21,44 @@ import java.io.File
 @Single
 class MusicFilesRepoImpl(
     private val context: Context,
-
+    listedItemDao: ListedItemDao,
 ) : MusicFilesRepo {
+
     private val _musicFileFlow = MutableStateFlow<List<FolderModel>?>(null)
-    private val musicFileFlow = _musicFileFlow.asStateFlow()
-    override fun getAllMusicFilesFlow(): Flow<List<FolderModel>?> = flow {
-        musicFileFlow.collect {
-            emit(it)
+    override val allMusicFilesFlow: Flow<List<FolderModel>?> = combine(
+        _musicFileFlow,
+        listedItemDao.getListedItems()
+        ) { folders, list ->
+        when {
+            folders == null -> {
+                // if folders are null, refresh and return null for now
+                refreshAllMusicFiles()
+                null
+            }
+
+            else -> {
+                // map the lists to the music files
+                folders.map { folderModel ->
+                    folderModel.copy(
+                        files = folderModel.files.map { file ->
+                            // get all lists where this file is added
+                            val listsAdded = list.filter { it.itemPath == file.filePath }.map { it.list }
+                            file.copy(
+                                listsAdded = listsAdded
+                            )
+                        }
+                    )
+                }
+            }
         }
-    }
+    }.flowOn(Dispatchers.Default)
 
     override suspend fun refreshAllMusicFiles() {
         coroutineScope {
             launch(Dispatchers.IO) {
-                folderFiles.clear()
-                foldersPath.clear()
-                getMusicFiles(null, false)
+                val folderFiles: MutableMap<String, MutableList<MusicModel>> = mutableMapOf()
+                val foldersPath: MutableMap<String, String> = mutableMapOf()
+                getMusicFiles(folderFiles, foldersPath)
 
                 folderFiles.mapNotNull { (folder, files) ->
                     if (files.isEmpty()) {
@@ -48,26 +72,32 @@ class MusicFilesRepoImpl(
                     }
                 }.also {
                     _musicFileFlow.value = it
-                    foldersPath.clear()
-                    folderFiles.clear()
                 }
             }
         }
     }
 
-    override fun getFilesOfFolderFlow(folderPath: String): Flow<FolderModel?> = flow {
-        if (musicFileFlow.value == null) {
-            refreshAllMusicFiles()
-        }
-        musicFileFlow.collect { folderModels ->
-            emit(folderModels?.find { it.path == folderPath })
-        }
+    override fun getFilesOfFolderFlow(folderPath: String): Flow<FolderModel?> = allMusicFilesFlow.map {
+        it?.find { folderModel -> folderModel.path == folderPath }
     }
 
-    private val folderFiles: MutableMap<String, MutableList<MusicModel>> = mutableMapOf()
-    private val foldersPath: MutableMap<String, String> = mutableMapOf()
+    override fun getFilesOfListFlow(listName: String): Flow<FolderModel> = allMusicFilesFlow.map {
+        val list = mutableListOf<MusicModel>()
+        it?.forEach { folderModel ->
+            folderModel.files.forEach { musicModel ->
+                if (musicModel.listsAdded.contains(listName)) {
+                    list.add(musicModel)
+                }
+            }
+        }
+        FolderModel(name = listName, path = "", files = list.toList())
 
-    private fun getMusicFiles(dir: File?, ignoreSubFolders: Boolean) {
+    }.flowOn(Dispatchers.Default)
+
+    private fun getMusicFiles(
+        folderFiles: MutableMap<String, MutableList<MusicModel>>,
+        foldersPath: MutableMap<String, String>
+    ) {
         val uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
         val projection = arrayOf(
             MediaStore.Audio.Media.DATA,         // File path
@@ -94,9 +124,6 @@ class MusicFilesRepoImpl(
                 val size = cursor.getLong(sizeIndex) // File size in bytes
                 val file = File(filePath)
                 val folderFile = file.parentFile // Get parent folder
-                if (ignoreSubFolders && folderFile?.name != dir?.name) {
-                    continue
-                }
 
                 if (folderFile != null) {
                     val folderPath = folderFile.absolutePath
@@ -120,7 +147,5 @@ class MusicFilesRepoImpl(
                 }
             }
         }
-
     }
-
 }

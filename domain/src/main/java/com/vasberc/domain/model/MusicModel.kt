@@ -1,5 +1,8 @@
 package com.vasberc.domain.model
 
+import androidx.compose.runtime.Stable
+
+@Stable
 data class MusicModel(
     val fileName: String,
     val filePath: String,

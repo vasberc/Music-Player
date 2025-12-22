@@ -40,6 +40,7 @@ dependencies {
     ksp(libs.koinKsp)
     implementation(platform(libs.koin.bom))
     implementation(libs.bundles.core)
+    implementation(libs.bundles.domain)
     testImplementation(libs.bundles.testing)
 }
 
