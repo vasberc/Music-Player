@@ -4,6 +4,7 @@ import android.app.Application
 import com.vasberc.data_local.di.DataLocalModule
 import com.vasberc.domain.di.DomainModule
 import com.vasberc.domain.usecase.AppStartUseCase
+import com.vasberc.musicplayer.BuildConfig
 import com.vasberc.musicplayer.di.AppModule
 import com.vasberc.presentation.di.PresentationModule
 import kotlinx.coroutines.CoroutineScope
@@ -15,7 +16,7 @@ import org.koin.core.context.startKoin
 import org.koin.ksp.generated.module
 import timber.log.Timber
 
-class MusicPlayerApp: Application() {
+class MusicPlayerApp : Application() {
 
     override fun onCreate() {
         super.onCreate()
@@ -44,6 +45,8 @@ class MusicPlayerApp: Application() {
     }
 
     private fun initTimber() {
-        Timber.Forest.plant(Timber.DebugTree())
+        if (BuildConfig.DEBUG) {
+            Timber.plant(Timber.DebugTree())
+        }
     }
 }
